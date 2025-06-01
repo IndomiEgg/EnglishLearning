@@ -21,19 +21,18 @@
 
     <main>
       <section class="quiz-container">
-        <h2>Fill in the blank with the correct verb form:</h2>
-        <div id="question"></div>
-
+        <h2>Wordle: Guess the 5-letter Word!</h2>
+        <div id="wordle-board"></div>
         <input
           type="text"
-          id="answer"
-          placeholder="Your answer here"
+          id="wordle-input"
+          maxlength="5"
+          placeholder="Type a 5-letter word"
           autocomplete="off"
         />
-        <button id="submit-btn">Submit</button>
-
-        <p id="feedback"></p>
-        <p id="score"></p>
+        <button id="wordle-submit">Submit</button>
+        <p id="wordle-feedback"></p>
+        <p id="wordle-score"></p>
       </section>
     </main>
 
@@ -42,79 +41,106 @@
     </footer>
 
     <script>
-      const quizQuestions = [
-        {
-          question: "She ____  to school every day.",
-          answer: "goes",
-        },
-        {
-          question: "I ____  eating lunch now.",
-          answer: "am",
-        },
-        {
-          question: "They ____  finished their homework.",
-          answer: "have",
-        },
-        {
-          question: "We ____  visit the museum tomorrow.",
-          answer: "will",
-        },
-        {
-          question: "He ____  reading a book yesterday.",
-          answer: "was",
-        },
+      // Simple 5-letter word list
+      const wordList = [
+        "apple",
+        "table",
+        "chair",
+        "books",
+        "plant",
+        "water",
+        "music",
+        "light",
+        "bread",
+        "house",
       ];
+      const answer =
+        wordList[Math.floor(Math.random() * wordList.length)].toLowerCase();
+      let attempts = 0;
+      const maxAttempts = 6;
+      const board = document.getElementById("wordle-board");
+      const input = document.getElementById("wordle-input");
+      const submit = document.getElementById("wordle-submit");
+      const feedback = document.getElementById("wordle-feedback");
+      const score = document.getElementById("wordle-score");
+      let gameOver = false;
 
-      let currentIndex = 0;
-      let score = 0;
-
-      const questionEl = document.getElementById("question");
-      const answerInput = document.getElementById("answer");
-      const submitBtn = document.getElementById("submit-btn");
-      const feedbackEl = document.getElementById("feedback");
-      const scoreEl = document.getElementById("score");
-
-      function loadQuestion() {
-        const currentQ = quizQuestions[currentIndex];
-        questionEl.textContent = currentQ.question;
-        answerInput.value = "";
-        feedbackEl.textContent = "";
-        answerInput.focus();
-        scoreEl.textContent = `Score: ${score} / ${quizQuestions.length}`;
+      function renderBoard(guesses) {
+        board.innerHTML = "";
+        guesses.forEach((guess) => {
+          const row = document.createElement("div");
+          row.className = "wordle-row";
+          for (let i = 0; i < 5; i++) {
+            const cell = document.createElement("span");
+            cell.className = "wordle-cell";
+            cell.textContent = guess.letters[i].toUpperCase();
+            cell.classList.add(guess.result[i]);
+            row.appendChild(cell);
+          }
+          board.appendChild(row);
+        });
       }
 
-      submitBtn.addEventListener("click", () => {
-        const userAnswer = answerInput.value.trim().toLowerCase();
-        const correctAnswer = quizQuestions[currentIndex].answer.toLowerCase();
+      let guesses = [];
 
-        if (userAnswer === "") {
-          feedbackEl.textContent = "Please enter your answer.";
+      submit.addEventListener("click", () => {
+        if (gameOver) return;
+        const value = input.value.trim().toLowerCase();
+        if (value.length !== 5) {
+          feedback.textContent = "Please enter a 5-letter word.";
           return;
         }
-
-        if (userAnswer === correctAnswer) {
-          feedbackEl.textContent = "Correct! 🎉";
-          score++;
-        } else {
-          feedbackEl.textContent = `Wrong! The correct answer is "${quizQuestions[currentIndex].answer}".`;
+        feedback.textContent = "";
+        attempts++;
+        // Check each letter
+        let result = Array(5).fill("absent");
+        let answerArr = answer.split("");
+        let guessArr = value.split("");
+        // First pass: correct
+        for (let i = 0; i < 5; i++) {
+          if (guessArr[i] === answerArr[i]) {
+            result[i] = "correct";
+            answerArr[i] = null; // Mark as used
+          }
         }
-
-        currentIndex++;
-        if (currentIndex < quizQuestions.length) {
-          setTimeout(loadQuestion, 2000);
-        } else {
-          setTimeout(() => {
-            feedbackEl.textContent = `Quiz finished! Your final score is ${score} out of ${quizQuestions.length}.`;
-            submitBtn.disabled = true;
-            answerInput.disabled = true;
-          }, 2000);
+        // Second pass: present
+        for (let i = 0; i < 5; i++) {
+          if (result[i] === "correct") continue;
+          const idx = answerArr.indexOf(guessArr[i]);
+          if (idx !== -1) {
+            result[i] = "present";
+            answerArr[idx] = null;
+          }
         }
-
-        scoreEl.textContent = `Score: ${score} / ${quizQuestions.length}`;
+        guesses.push({ letters: guessArr, result });
+        renderBoard(guesses);
+        input.value = "";
+        if (value === answer) {
+          feedback.textContent = `Congratulations! The word was "${answer.toUpperCase()}".`;
+          gameOver = true;
+          score.textContent = `Attempts: ${attempts} / ${maxAttempts}`;
+          input.disabled = true;
+          submit.disabled = true;
+          return;
+        }
+        if (attempts >= maxAttempts) {
+          feedback.textContent = `Game Over! The word was "${answer.toUpperCase()}".`;
+          gameOver = true;
+          input.disabled = true;
+          submit.disabled = true;
+        }
+        score.textContent = `Attempts: ${attempts} / ${maxAttempts}`;
       });
 
-      // Load first question initially
-      loadQuestion();
+      input.addEventListener("keyup", function (e) {
+        if (e.key === "Enter") {
+          submit.click();
+        }
+      });
+
+      // Initial render
+      renderBoard(guesses);
+      score.textContent = `Attempts: ${attempts} / ${maxAttempts}`;
     </script>
   </body>
 </html>
