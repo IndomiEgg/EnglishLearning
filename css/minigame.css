@@ -126,6 +126,30 @@ body.minigame {
   color: #007acc;
 }
 
+.game-mode-btn {
+  background: #007acc;
+  color: #fff;
+  border: none;
+  border-radius: 6px 6px 0 0;
+  padding: 10px 22px;
+  margin-right: 6px;
+  font-weight: bold;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.game-mode-btn.selected,
+.game-mode-btn:hover {
+  background: #005fa3;
+  color: #fff;
+}
+#game-mode-selector {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
 @media (max-width: 600px) {
   .quiz-container {
     padding: 12px 4vw;
@@ -159,5 +183,12 @@ body.minigame {
   }
   h2 {
     font-size: 1.2em;
+  }
+  .game-mode-btn {
+    padding: 8px 10px;
+    font-size: 0.95em;
+  }
+  #game-mode-selector {
+    gap: 4px;
   }
 }

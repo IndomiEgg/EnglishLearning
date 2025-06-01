@@ -21,18 +21,40 @@
 
     <main>
       <section class="quiz-container">
-        <h2>Wordle: Guess the 5-letter Word!</h2>
-        <div id="wordle-board"></div>
-        <input
-          type="text"
-          id="wordle-input"
-          maxlength="5"
-          placeholder="Type a 5-letter word"
-          autocomplete="off"
-        />
-        <button id="wordle-submit">Submit</button>
-        <p id="wordle-feedback"></p>
-        <p id="wordle-score"></p>
+        <h2>Choose Your Mini Game!</h2>
+        <div id="game-mode-selector" style="margin-bottom: 18px">
+          <button id="select-wordle" class="game-mode-btn selected">
+            Wordle
+          </button>
+          <button id="select-quiz" class="game-mode-btn">Quiz</button>
+        </div>
+        <div id="wordle-section">
+          <h3>Wordle: Guess the 5-letter Word!</h3>
+          <div id="wordle-board"></div>
+          <input
+            type="text"
+            id="wordle-input"
+            maxlength="5"
+            placeholder="Type a 5-letter word"
+            autocomplete="off"
+          />
+          <button id="wordle-submit">Submit</button>
+          <p id="wordle-feedback"></p>
+          <p id="wordle-score"></p>
+        </div>
+        <div id="quiz-section" style="display: none">
+          <h3>Quiz: Fill in the blank with the correct verb form!</h3>
+          <div id="quiz-question"></div>
+          <input
+            type="text"
+            id="quiz-answer"
+            placeholder="Your answer here"
+            autocomplete="off"
+          />
+          <button id="quiz-submit">Submit</button>
+          <p id="quiz-feedback"></p>
+          <p id="quiz-score"></p>
+        </div>
       </section>
     </main>
 
@@ -41,6 +63,25 @@
     </footer>
 
     <script>
+      // --- Game Mode Switcher ---
+      const wordleSection = document.getElementById("wordle-section");
+      const quizSection = document.getElementById("quiz-section");
+      const selectWordle = document.getElementById("select-wordle");
+      const selectQuiz = document.getElementById("select-quiz");
+      selectWordle.addEventListener("click", () => {
+        wordleSection.style.display = "block";
+        quizSection.style.display = "none";
+        selectWordle.classList.add("selected");
+        selectQuiz.classList.remove("selected");
+      });
+      selectQuiz.addEventListener("click", () => {
+        wordleSection.style.display = "none";
+        quizSection.style.display = "block";
+        selectQuiz.classList.add("selected");
+        selectWordle.classList.remove("selected");
+      });
+
+      // --- Wordle Game ---
       const wordList = [
         "apple",
         "table",
@@ -139,6 +180,61 @@
 
       renderBoard(guesses);
       score.textContent = `Attempts: ${attempts} / ${maxAttempts}`;
+
+      // --- Quiz Game ---
+      const quizQuestions = [
+        { question: "She ____ to school every day.", answer: "goes" },
+        { question: "I ____ eating lunch now.", answer: "am" },
+        { question: "They ____ finished their homework.", answer: "have" },
+        { question: "We ____ visit the museum tomorrow.", answer: "will" },
+        { question: "He ____ reading a book yesterday.", answer: "was" },
+      ];
+      let quizIndex = 0;
+      let quizScore = 0;
+      const quizQuestionEl = document.getElementById("quiz-question");
+      const quizAnswerInput = document.getElementById("quiz-answer");
+      const quizSubmitBtn = document.getElementById("quiz-submit");
+      const quizFeedbackEl = document.getElementById("quiz-feedback");
+      const quizScoreEl = document.getElementById("quiz-score");
+      function loadQuizQuestion() {
+        const currentQ = quizQuestions[quizIndex];
+        quizQuestionEl.textContent = currentQ.question;
+        quizAnswerInput.value = "";
+        quizFeedbackEl.textContent = "";
+        quizAnswerInput.focus();
+        quizScoreEl.textContent = `Score: ${quizScore} / ${quizQuestions.length}`;
+      }
+      quizSubmitBtn.addEventListener("click", () => {
+        const userAnswer = quizAnswerInput.value.trim().toLowerCase();
+        const correctAnswer = quizQuestions[quizIndex].answer.toLowerCase();
+        if (userAnswer === "") {
+          quizFeedbackEl.textContent = "Please enter your answer.";
+          return;
+        }
+        if (userAnswer === correctAnswer) {
+          quizFeedbackEl.textContent = "Correct! 🎉";
+          quizScore++;
+        } else {
+          quizFeedbackEl.textContent = `Wrong! The correct answer is "${quizQuestions[quizIndex].answer}".`;
+        }
+        quizIndex++;
+        if (quizIndex < quizQuestions.length) {
+          setTimeout(loadQuizQuestion, 2000);
+        } else {
+          setTimeout(() => {
+            quizFeedbackEl.textContent = `Quiz finished! Your final score is ${quizScore} out of ${quizQuestions.length}.`;
+            quizSubmitBtn.disabled = true;
+            quizAnswerInput.disabled = true;
+          }, 2000);
+        }
+        quizScoreEl.textContent = `Score: ${quizScore} / ${quizQuestions.length}`;
+      });
+      quizAnswerInput.addEventListener("keyup", function (e) {
+        if (e.key === "Enter") {
+          quizSubmitBtn.click();
+        }
+      });
+      loadQuizQuestion();
     </script>
   </body>
 </html>
