@@ -1,0 +1,29 @@
+body.grammar {
+  background: linear-gradient(to bottom right, #fff0f6, #ffe6e9);
+  color: #333;
+  font-family: Arial, sans-serif;
+}
+
+.grammar-rule {
+  background: white;
+  margin: 20px auto;
+  padding: 15px 25px;
+  border-radius: 10px;
+  max-width: 700px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+
+.grammar-rule:hover {
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+  transform: translateY(-6px) scale(1.03);
+}
+
+.grammar-rule h3 {
+  color: #d6336c;
+  margin-bottom: 8px;
+}
+
+.grammar-rule p {
+  line-height: 1.5;
+}

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mini Game - English Learning Hub</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/minigame.css" />
+  </head>
+  <body class="minigame">
+    <header>
+      <h1>English Mini Game: Tenses Quiz</h1>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="tenses.html">Tenses</a>
+        <a href="grammar.html">Grammar</a>
+        <a href="minigame.html">Mini Game</a>
+        <a href="about.html">About</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="quiz-container">
+        <h2>Fill in the blank with the correct verb form:</h2>
+        <div id="question"></div>
+
+        <input
+          type="text"
+          id="answer"
+          placeholder="Your answer here"
+          autocomplete="off"
+        />
+        <button id="submit-btn">Submit</button>
+
+        <p id="feedback"></p>
+        <p id="score"></p>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2025 English Learning Hub by Arkan</p>
+    </footer>
+
+    <script>
+      const quizQuestions = [
+        {
+          question: "She ____  to school every day.",
+          answer: "goes",
+        },
+        {
+          question: "I ____  eating lunch now.",
+          answer: "am",
+        },
+        {
+          question: "They ____  finished their homework.",
+          answer: "have",
+        },
+        {
+          question: "We ____  visit the museum tomorrow.",
+          answer: "will",
+        },
+        {
+          question: "He ____  reading a book yesterday.",
+          answer: "was",
+        },
+      ];
+
+      let currentIndex = 0;
+      let score = 0;
+
+      const questionEl = document.getElementById("question");
+      const answerInput = document.getElementById("answer");
+      const submitBtn = document.getElementById("submit-btn");
+      const feedbackEl = document.getElementById("feedback");
+      const scoreEl = document.getElementById("score");
+
+      function loadQuestion() {
+        const currentQ = quizQuestions[currentIndex];
+        questionEl.textContent = currentQ.question;
+        answerInput.value = "";
+        feedbackEl.textContent = "";
+        answerInput.focus();
+        scoreEl.textContent = `Score: ${score} / ${quizQuestions.length}`;
+      }
+
+      submitBtn.addEventListener("click", () => {
+        const userAnswer = answerInput.value.trim().toLowerCase();
+        const correctAnswer = quizQuestions[currentIndex].answer.toLowerCase();
+
+        if (userAnswer === "") {
+          feedbackEl.textContent = "Please enter your answer.";
+          return;
+        }
+
+        if (userAnswer === correctAnswer) {
+          feedbackEl.textContent = "Correct! 🎉";
+          score++;
+        } else {
+          feedbackEl.textContent = `Wrong! The correct answer is "${quizQuestions[currentIndex].answer}".`;
+        }
+
+        currentIndex++;
+        if (currentIndex < quizQuestions.length) {
+          setTimeout(loadQuestion, 2000);
+        } else {
+          setTimeout(() => {
+            feedbackEl.textContent = `Quiz finished! Your final score is ${score} out of ${quizQuestions.length}.`;
+            submitBtn.disabled = true;
+            answerInput.disabled = true;
+          }, 2000);
+        }
+
+        scoreEl.textContent = `Score: ${score} / ${quizQuestions.length}`;
+      });
+
+      // Load first question initially
+      loadQuestion();
+    </script>
+  </body>
+</html>

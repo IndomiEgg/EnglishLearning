@@ -1,0 +1,60 @@
+body.minigame {
+  background: linear-gradient(to bottom right, #fffbe6, #ffecb3);
+  color: #333;
+}
+
+.quiz-container {
+  max-width: 600px;
+  margin: 40px auto;
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+  text-align: center;
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+
+.quiz-container:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  transform: translateY(-6px) scale(1.03);
+}
+
+#question {
+  font-size: 1.2em;
+  margin-bottom: 20px;
+}
+
+#answer {
+  padding: 10px;
+  font-size: 1em;
+  width: 80%;
+  max-width: 400px;
+  margin-bottom: 15px;
+  border: 2px solid #007acc;
+  border-radius: 6px;
+}
+
+#submit-btn {
+  background-color: #007acc;
+  color: white;
+  padding: 10px 25px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#submit-btn:hover {
+  background-color: #005fa3;
+}
+
+#feedback {
+  margin-top: 20px;
+  font-size: 1.1em;
+  min-height: 24px;
+}
+
+#score {
+  margin-top: 10px;
+  font-weight: bold;
+}

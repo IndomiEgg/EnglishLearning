@@ -1,0 +1,29 @@
+body.about {
+  background: linear-gradient(to bottom right, #f9f9f9, #dfe9f3);
+  color: #333;
+}
+
+.about-section {
+  max-width: 600px;
+  margin: 40px auto;
+  background: white;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+
+.about-section:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  transform: translateY(-6px) scale(1.03);
+}
+
+.profile-img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+  border: 3px solid #007acc;
+}
