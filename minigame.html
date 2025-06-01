@@ -41,7 +41,6 @@
     </footer>
 
     <script>
-      // Simple 5-letter word list
       const wordList = [
         "apple",
         "table",
@@ -92,18 +91,18 @@
         }
         feedback.textContent = "";
         attempts++;
-        // Check each letter
+
         let result = Array(5).fill("absent");
         let answerArr = answer.split("");
         let guessArr = value.split("");
-        // First pass: correct
+
         for (let i = 0; i < 5; i++) {
           if (guessArr[i] === answerArr[i]) {
             result[i] = "correct";
-            answerArr[i] = null; // Mark as used
+            answerArr[i] = null;
           }
         }
-        // Second pass: present
+
         for (let i = 0; i < 5; i++) {
           if (result[i] === "correct") continue;
           const idx = answerArr.indexOf(guessArr[i]);
@@ -138,7 +137,6 @@
         }
       });
 
-      // Initial render
       renderBoard(guesses);
       score.textContent = `Attempts: ${attempts} / ${maxAttempts}`;
     </script>

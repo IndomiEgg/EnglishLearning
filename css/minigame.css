@@ -125,3 +125,39 @@ body.minigame {
   margin-top: 4px;
   color: #007acc;
 }
+
+@media (max-width: 600px) {
+  .quiz-container {
+    padding: 12px 4vw;
+    max-width: 98vw;
+    min-width: unset;
+    border-radius: 10px;
+  }
+  .wordle-board {
+    gap: 4px;
+  }
+  .wordle-row {
+    gap: 3px;
+  }
+  .wordle-cell {
+    width: 30px;
+    height: 30px;
+    font-size: 1em;
+    border-radius: 4px;
+  }
+  #wordle-input {
+    width: 90vw;
+    max-width: 220px;
+    font-size: 1em;
+    padding: 7px;
+  }
+  #wordle-submit {
+    width: 100%;
+    max-width: 220px;
+    font-size: 1em;
+    margin-bottom: 8px;
+  }
+  h2 {
+    font-size: 1.2em;
+  }
+}
